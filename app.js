@@ -46,9 +46,9 @@ function moveRight() {
             
             let filteredRow = row.filter(num => num); // Remove zeros
             let missing = 4 - filteredRow.length;
-'effetto
 
-System: // Count zeros to fill the row
+
+// Count zeros to fill the row
             let zeros = Array(missing).fill(0);
             // Place zeros on the left, non-zero tiles on the right
             let newRow = zeros.concat(filteredRow);
@@ -139,7 +139,7 @@ function combineRow() {
     checkForWin(); // Check for 2048 tile
 }
 
-// Combine adjacent equalო�
+
 
 //equal tiles in columns, update score
 function combineColumn() {

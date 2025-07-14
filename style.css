@@ -1,10 +1,10 @@
-*{
+* {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
 }
 
-body{
+body {
     background-color: whitesmoke;
     display: flex;
     justify-content: center;
@@ -12,34 +12,35 @@ body{
     font-family: "Clear Sans", Arial, Helvetica, sans-serif;
 }
 
-h1{
+h1 {
     font-size: 80px;
     line-height: 0.7;
     color: rgb(53, 53, 53);
 }
 
-.container{
+.container {
     width: 468px;
     margin-top: 40px;
 }
 
-.info{
+.info {
     display: flex;
     justify-content: space-between;
     margin-bottom: 20px;
 }
-.grid{
+
+.grid {
     display: flex;
     width: 456px;
     height: 456px;
     background-color: #BBADA0;
-    border: 7px solid #BBADA0 ;
+    border: 7px solid #BBADA0;
     border-radius: 6px;
     margin-top: 22px;
-    /* display: grid; */
     flex-wrap: wrap;
 }
-.grid div{
+
+.grid div {
     width: 100px;
     height: 100px;
     margin: 5px;
@@ -54,44 +55,52 @@ h1{
     line-height: 1.6;
 }
 
-.score-container{
+.score-container {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 90px;
     padding: 5px 10px;
     height: 70px;
-    border-radius: 3px ;
+    border-radius: 3px;
     background-color: #8f7a66;
     color: #FFF;
 }
 
-#score{
+#score {
     font-size: 30px;
 }
-.score-title{
+
+.score-title {
     font-size: 12px;
 }
-#result{
+
+#result {
     font-size: 30px;
     color: rgb(252, 55, 55);
     font-weight: 900;
 }
-#reset-button{
+
+#reset-button {
     outline: none;
     border: none;
-    background-color: rgb(68, 194, 243);
-    width: 120px;
-    height: 30px;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 600;
-    color: rgb(0, 0, 0);
-    letter-spacing: 1px;
-    transition: all ease 0.3s;
+    background-color: #8f7a66; 
+    color: #FFFFFF; 
+    width: 140px; 
+    height: 40px; 
+    border-radius: 6px; 
+    font-size: 16px; 
+    font-weight: bold; 
+    font-family: "Clear Sans", Arial, Helvetica, sans-serif; 
+    padding: 10px; 
+    cursor: pointer; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); 
+    transition: all 0.3s ease; 
 }
-#reset-button:hover{
-    background-color: rgb(49, 148, 187);
+
+#reset-button:hover {
+    background-color: #a68e77; 
     transform: translateY(-2px);
-    color: white;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3); 
+    color: #FFFFFF; 
 }
