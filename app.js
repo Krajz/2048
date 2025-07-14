@@ -1,46 +1,56 @@
+// Select HTML elements for grid, score, and result display
 const gridDisplay = document.querySelector('.grid');
 const scoreDisplay = document.getElementById('score');
 const resultDisplay = document.getElementById('result');
 
+// Define 4x4 grid width
 const width = 4;
 
+// Track score and store grid squares
 let score = 0;
 let squares = [];
 
-// Making board
+// Create 4x4 game board
 function createBoard() {
+    // Generate 16 divs for the grid
     for (let i = 0; i < width * width; i++) {
         const square = document.createElement('div');
-        square.innerHTML = '0';
+        square.innerHTML = '0'; // Initialize empty tile
         gridDisplay.appendChild(square);
-        squares.push(square);
+        squares.push(square); // Store for manipulation
     }
-    generate();
-    generate();
+    generate(); // Add first random tile (2)
+    generate(); // Add second random tile (2)
 }
 
-// Gen random Number
+// Place a new tile (value 2) in a random empty square
 function generate() {
     const randomNumber = Math.floor(Math.random() * squares.length);
     if (squares[randomNumber].innerHTML == 0) {
-        squares[randomNumber].innerHTML = 2;
-        checkForLose();
-    } else generate();
+        squares[randomNumber].innerHTML = 2; // Set empty square to 2
+        checkForLose(); // Check if game is lost
+    } else {
+        generate(); // Retry if square is not empty
+    }
 }
 
-// Moving tiles
+// Shift tiles right, moving non-zero tiles to the right
 function moveRight() {
     for (let i = 0; i < 16; i++) {
-        if (i % 4 === 0) {
+        if (i % 4 === 0) { // Process each row
             let totalOne = squares[i].innerHTML;
             let totalTwo = squares[i + 1].innerHTML;
             let totalThree = squares[i + 2].innerHTML;
             let totalFour = squares[i + 3].innerHTML;
             let row = [parseInt(totalOne), parseInt(totalTwo), parseInt(totalThree), parseInt(totalFour)];
             
-            let filteredRow = row.filter(num => num);
+            let filteredRow = row.filter(num => num); // Remove zeros
             let missing = 4 - filteredRow.length;
+'effetto
+
+System: // Count zeros to fill the row
             let zeros = Array(missing).fill(0);
+            // Place zeros on the left, non-zero tiles on the right
             let newRow = zeros.concat(filteredRow);
             squares[i].innerHTML = newRow[0];
             squares[i + 1].innerHTML = newRow[1];
@@ -50,18 +60,20 @@ function moveRight() {
     }
 }
 
+// Shift tiles left, moving non-zero tiles to the left
 function moveLeft() {
     for (let i = 0; i < 16; i++) {
-        if (i % 4 === 0) {
+        if (i % 4 === 0) { // Process each row
             let totalOne = squares[i].innerHTML;
             let totalTwo = squares[i + 1].innerHTML;
             let totalThree = squares[i + 2].innerHTML;
             let totalFour = squares[i + 3].innerHTML;
             let row = [parseInt(totalOne), parseInt(totalTwo), parseInt(totalThree), parseInt(totalFour)];
             
-            let filteredRow = row.filter(num => num);
+            let filteredRow = row.filter(num => num); // Remove zeros
             let missing = 4 - filteredRow.length;
             let zeros = Array(missing).fill(0);
+            // Place non-zero tiles on the left, zeros on the right
             let newRow = filteredRow.concat(zeros);
             squares[i].innerHTML = newRow[0];
             squares[i + 1].innerHTML = newRow[1];
@@ -71,17 +83,19 @@ function moveLeft() {
     }
 }
 
+// Shift tiles up, moving non-zero tiles to the top
 function moveUp() {
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 4; i++) { // Process each column
         let totalOne = squares[i].innerHTML;
         let totalTwo = squares[i + width].innerHTML;
         let totalThree = squares[i + width * 2].innerHTML;
         let totalFour = squares[i + width * 3].innerHTML;
         let column = [parseInt(totalOne), parseInt(totalTwo), parseInt(totalThree), parseInt(totalFour)];
         
-        let filteredColumn = column.filter(num => num);
+        let filteredColumn = column.filter(num => num); // Remove zeros
         let missing = 4 - filteredColumn.length;
         let zeros = Array(missing).fill(0);
+        // Place non-zero tiles at the top, zeros at the bottom
         let newColumn = filteredColumn.concat(zeros);
         squares[i].innerHTML = newColumn[0];
         squares[i + width].innerHTML = newColumn[1];
@@ -90,17 +104,19 @@ function moveUp() {
     }
 }
 
+// Shift tiles down, moving non-zero tiles to the bottom
 function moveDown() {
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 4; i++) { // Process each column
         let totalOne = squares[i].innerHTML;
         let totalTwo = squares[i + width].innerHTML;
         let totalThree = squares[i + width * 2].innerHTML;
         let totalFour = squares[i + width * 3].innerHTML;
         let column = [parseInt(totalOne), parseInt(totalTwo), parseInt(totalThree), parseInt(totalFour)];
         
-        let filteredColumn = column.filter(num => num);
+        let filteredColumn = column.filter(num => num); // Remove zeros
         let missing = 4 - filteredColumn.length;
         let zeros = Array(missing).fill(0);
+        // Place zeros at the top, non-zero tiles at the bottom
         let newColumn = zeros.concat(filteredColumn);
         squares[i].innerHTML = newColumn[0];
         squares[i + width].innerHTML = newColumn[1];
@@ -109,34 +125,37 @@ function moveDown() {
     }
 }
 
-// Combine
+// Combine adjacent equal tiles in rows, update score
 function combineRow() {
     for (let i = 0; i < 15; i++) {
         if (squares[i].innerHTML === squares[i + 1].innerHTML) {
             let combineTotal = parseInt(squares[i].innerHTML) + parseInt(squares[i + 1].innerHTML);
-            squares[i].innerHTML = combineTotal;
-            squares[i + 1].innerHTML = 0;
-            score += combineTotal;
+            squares[i].innerHTML = combineTotal; // Merge tiles
+            squares[i + 1].innerHTML = 0; // Clear the second tile
+            score += combineTotal; // Add to score
             scoreDisplay.innerHTML = score;
         }
     }
-    checkForWin();
+    checkForWin(); // Check for 2048 tile
 }
 
-function combineCollumn() {
+// Combine adjacent equalო�
+
+//equal tiles in columns, update score
+function combineColumn() {
     for (let i = 0; i < 12; i++) {
         if (squares[i].innerHTML === squares[i + width].innerHTML) {
             let combineTotal = parseInt(squares[i].innerHTML) + parseInt(squares[i + width].innerHTML);
-            squares[i].innerHTML = combineTotal;
-            squares[i + width].innerHTML = 0;
-            score += combineTotal;
+            squares[i].innerHTML = combineTotal; // Merge tiles
+            squares[i + width].innerHTML = 0; // Clear the second tile
+            score += combineTotal; // Add to score
             scoreDisplay.innerHTML = score;
         }
     }
-    checkForWin();
+    checkForWin(); // Check for 2048 tile
 }
 
-// func => key
+// Handle arrow key inputs for movement
 function control(e) {
     if (e.key === 'ArrowLeft') {
         keyLeft();
@@ -149,6 +168,7 @@ function control(e) {
     }
 }
 
+// Execute left movement: move, combine, move again, generate new tile
 function keyLeft() {
     moveLeft();
     combineRow();
@@ -156,6 +176,7 @@ function keyLeft() {
     generate();
 }
 
+// Execute right movement: move, combine, move again, generate new tile
 function keyRight() {
     moveRight();
     combineRow();
@@ -163,32 +184,34 @@ function keyRight() {
     generate();
 }
 
+// Execute up movement: move, combine, move again, generate new tile
 function keyUp() {
     moveUp();
-    combineCollumn();
+    combineColumn();
     moveUp();
     generate();
 }
 
+// Execute down movement: move, combine, move again, generate new tile
 function keyDown() {
     moveDown();
-    combineCollumn();
+    combineColumn();
     moveDown();
     generate();
 }
 
-// checking for 2048 tile can coment out to disable
+// Check for 2048 tile to declare a win
 function checkForWin() {
     for (let i = 0; i < squares.length; i++) {
         if (squares[i].innerHTML == 2048) {
             resultDisplay.innerHTML = 'You Win!';
-            document.removeEventListener('keydown', control);
-            setTimeout(clear, 3000);
+            document.removeEventListener('keydown', control); // Disable controls
+            setTimeout(clear, 3000); // Clear timer after 3 seconds
         }
     }
 }
 
-// Losing
+// Check for loss: no empty tiles and no possible merges
 function checkForLose() {
     let zeros = 0;
     for (let i = 0; i < squares.length; i++) {
@@ -199,39 +222,41 @@ function checkForLose() {
     let canCombine = false;
     for (let i = 0; i < squares.length; i++) {
         if (i % 4 !== 3 && squares[i].innerHTML === squares[i + 1].innerHTML && squares[i].innerHTML != 0) {
-            canCombine = true;
+            canCombine = true; // Check horizontal merges
         }
         if (i < 12 && squares[i].innerHTML === squares[i + width].innerHTML && squares[i].innerHTML != 0) {
-            canCombine = true;
+            canCombine = true; // Check vertical merges
         }
     }
     if (zeros === 0 && !canCombine) {
         resultDisplay.innerHTML = 'You Lose!';
-        document.removeEventListener('keydown', control);
+        document.removeEventListener('keydown', control); // Disable controls
         document.getElementById('reset-button').style.display = 'block'; // Show reset button
-        setTimeout(clear, 3000);
+        setTimeout(clear, 3000); // Clear timer after 3 seconds
     }
 }
 
-// New Reset Game Function
+// Reset the game to start over
 function resetGame() {
     squares.forEach(square => {
-        square.innerHTML = 0;
+        square.innerHTML = 0; // Clear all tiles
     });
-    score = 0;
+    score = 0; // Reset score
     scoreDisplay.innerHTML = score;
-    resultDisplay.innerHTML = '';
-    document.getElementById('reset-button').style.display = 'none';
-    document.addEventListener('keydown', control);
+    resultDisplay.innerHTML = ''; // Clear result message
+    document.getElementById('reset-button').style.display = 'none'; // Hide reset button
+    document.addEventListener('keydown', control); // Re-enable controls
+    generate(); // Add two new tiles
     generate();
-    generate();
-    addColours();
+    addColours(); // Update tile colors
 }
 
+// Stop the color update timer
 function clear() {
     clearInterval(myTimer);
 }
 
+// Apply background colors based on tile values
 function addColours() {
     for (let i = 0; i < squares.length; i++) {
         if (squares[i].innerHTML == 0) squares[i].style.background = '#afa192';
@@ -249,12 +274,13 @@ function addColours() {
     }
 }
 
+// Initialize colors and set up continuous color updates
 addColours();
 let myTimer = setInterval(addColours, 50);
 
-// Add event listener for reset button
+// Attach event listeners for reset button and keyboard controls
 document.getElementById('reset-button').addEventListener('click', resetGame);
-
 document.addEventListener('keydown', control);
 
+// Start the game
 createBoard();
